@@ -11,14 +11,19 @@ RUN ruby-switch --set ruby2.2
 RUN gem update --system
 RUN gem install bundler
 
-WORKDIR /tmp
 ADD Gemfile Gemfile
 ADD Gemfile.lock Gemfile.lock
 RUN bundle install
 
+RUN useradd -ms /bin/bash sinatra
+
+USER sinatra
 ADD . /app
 WORKDIR /app
+USER root
+RUN chown -R sinatra:sinatra /app
 
+USER sinatra
 EXPOSE 5000
 
 CMD ["foreman", "start", "-d", "/app"]
