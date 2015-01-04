@@ -1,6 +1,8 @@
 FROM ubuntu
 MAINTAINER swindsor@gmail.com
 
+ENV PORT 5000
+
 RUN apt-get -y install software-properties-common
 RUN apt-add-repository ppa:brightbox/ruby-ng
 RUN apt-get -y update
@@ -24,6 +26,6 @@ USER root
 RUN chown -R sinatra:sinatra /app
 
 USER sinatra
-EXPOSE 5000
+EXPOSE $PORT
 
 CMD ["foreman", "start", "-d", "/app"]
